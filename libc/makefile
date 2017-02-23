@@ -11,10 +11,10 @@ DESTDIR?=
 PREFIX?=/usr/local
 EXEC_PREFIX?=$(PREFIX)
 INCLUDEDIR?=$(PREFIX)/include
-LIBDIR=$(EXEC_PREFIX)/lib
+LIBDIR?=$(EXEC_PREFIX)/lib
 
-CLFAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
-CPPFLASG:=$(CPPFLAGS) -D__is_libc -Iinclude
+CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
+CPPFLAGS:=$(CPPFLAGS) -D__is_libc -Iinclude
 LIBK_CFLAGS:=$(CFLAGS)
 LIBK_CPPFLAGS:=$(CPPFLAGS) -D__is_libk
 
@@ -22,35 +22,35 @@ ARCHDIR=arch/$(HOSTARCH)
 
 include $(ARCHDIR)/make.config
 
-CFLAGS:=$(FLASG) $(ARCH_CFLAGS)
+CFLAGS:=$(CFLAGS) $(ARCH_CFLAGS)
 CPPFLAGS:=$(CPPFLAGS) $(ARCH_CPPFLAGS)
-LIBK_CFLAGS:=$(LIBK_CFLAGS) $(KERNEL_ARCH_LDFLAGS)
-LIBK_CPPFLAGS:=$(LIBK_CPPFLAGS) $(KERNEL_ARCH_LIBS)
+LIBK_CFLAGS:=$(LIBK_CFLAGS) $(KERNEL_ARCH_CFLAGS)
+LIBK_CPPFLAGS:=$(LIBK_CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
 
-FREE_OBJS=\
-		  $(ARCH_FREEOBJS) \
-		  stdio/printf.o \
-		  stdio/putchar.o \
-		  stdio/puts.o \
-		  stdlib/abort.o \
-		  string/memcmp.o \
-		  string/memcpy.o \
-		  string/memmove.o \
-		  string/memset.o \
-		  string/strleng.o \
+FREEOBJS=\
+$(ARCH_FREEOBJS) \
+stdio/printf.o \
+stdio/putchar.o \
+stdio/puts.o \
+stdlib/abort.o \
+string/memcmp.o \
+string/memcpy.o \
+string/memmove.o \
+string/memset.o \
+string/strlen.o \
 
 HOSTEDOBJS=\
-		   $(ARCH_HOSTEDOBJS) \
+$(ARCH_HOSTEDOBJS) \
 
 OBJS=\
-	 $(FREEOBJS) \
-	 $(HOSTEDOBJS) \
+$(FREEOBJS) \
+$(HOSTEDOBJS) \
 
-LIBK_OBJS=$(FREEOBJS:.o-.libk.o)
+LIBK_OBJS=$(FREEOBJS:.o=.libk.o)
 
 BINARIES=libk.a
 
-.PHONY: all clean install install-headers install-kernel
+.PHONY: all clean install install-headers install-libs
 .SUFFIXES: .o .libk.o .c .S
 
 all: $(BINARIES)
