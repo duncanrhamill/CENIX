@@ -23,13 +23,13 @@ void tty_init(void) {
 
     for (size_t y = 0; y < VGA_HEIGHT; y++) {
         for (size_t x = 0; x < VGA_WIDTH; x++) {
-            const size_t index = tty_get_buff_index_from_xy(x, y);
+            const size_t index = (const size_t)tty_get_buff_index_from_xy(x, y);
             tty_buff[index] = vga_cell(' ', tty_colour);
         }
     }
 }
 
-size_t tty_get_buff_index_from_xy(size_t x, size_t y) {
+size_t tty_get_buff_index_from_xy(const size_t x, const size_t y) {
     return y * VGA_WIDTH + x;
 }
 
@@ -38,7 +38,7 @@ void tty_set_colour(uint8_t colour) {
 }
 
 void tty_put_cell_at(char c, uint8_t colour, size_t x, size_t y) {
-    const size_t index = get_buff_index_from_xy(x, y);
+    const size_t index = tty_get_buff_index_from_xy(x, y);
     tty_buff[index] = vga_cell(c, colour);
 }
 
@@ -48,9 +48,9 @@ void tty_scroll() {
             if (y == VGA_HEIGHT - 1) {
                 tty_put_cell_at(' ', tty_colour, x, y);
             } else {
-                const size_t index_below = tty_get_buff_index_from_xy(x, y + 1);
+                const size_t index_below = (const size_t)tty_get_buff_index_from_xy(x, y + 1);
                 const uint16_t cell_below = tty_buff[index_below];
-                const size_t index_here = tty_get_buff_index_from_xy(x, y);
+                const size_t index_here = (const size_t)tty_get_buff_index_from_xy(x, y);
                 tty_buff[index_here] = cell_below;
             }
         }

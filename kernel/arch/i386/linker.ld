@@ -1,5 +1,5 @@
 /* Bootloader looks for the _start point */
-ENTRY(_start);
+ENTRY(_start)
 
 /* Where the various sections of the object files will be put in the final image */
 SECTIONS

@@ -29,6 +29,9 @@ _start:
     # Setup the stack so we can actually do some stuff with c
     mov $stack_top, %esp
 
+    # call the init
+    call _init
+
     #TODO Load GDT
     #TODO enable paging
 
