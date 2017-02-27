@@ -65,9 +65,9 @@ int printf(const char* restrict format, ...) {
 			written += len;
         } else if (*format == 'x') {
             format++;
-            int hex = va_arg(parameters, int);
-            char* buff = "        ";
-            itoa(hex, buff, 16);
+            long hex = va_arg(parameters, int);
+            char* buff = "                ";
+            ltoa(hex, buff, 16);
             char* str = trim(buff);
             size_t len = strlen(str);
             if (maxrem < len) {

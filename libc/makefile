@@ -43,6 +43,7 @@ string/memmove.o \
 string/memset.o \
 string/strlen.o \
 string/trim.o \
+string/strrev.o \
 
 HOSTEDOBJS=\
 $(ARCH_HOSTEDOBJS) \

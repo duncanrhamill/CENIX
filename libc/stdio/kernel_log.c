@@ -13,5 +13,5 @@ void kernel_log(char* format, int level) {
             level_str = " [ ] ";
     }
 
-    printf("%s %s\n", level_str, message);
+    printf("%s %s\n", level_str, format);
 }

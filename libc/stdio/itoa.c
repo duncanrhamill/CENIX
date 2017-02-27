@@ -1,36 +1,41 @@
 #include <stdint.h>
+#include <string.h>
+
+#define MAX_INT 0x7FFFFFFF
 
 char* itoa(int value, char* str, int base) {
-    char* rc;
-    char* ptr;
-    char* low;
+    int i = 0;
+    int isNeg = 0;
+    
+    if (value > MAX_INT) {
+        return "ERR:INT > MAX_INT";
+    }
 
-    // ensure it's a base we can use
-    if (base < 2 || base > 36) {
-        *str = '\0';
+
+    if (value == 0) {
+        str[i++] = '0';
+        str[i] = '\0';
         return str;
     }
-    rc = ptr = str;
 
     if (value < 0 && base == 10) {
-        *ptr++ = '-';
+        isNeg = 1;
+        value = -value;
     }
 
-    low = ptr;
-
-    do {
-        *ptr++ = "zyxwvutsrpqonmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[35 + value % base];
+    while (value != 0) {
+        int rem = value % base;
+        str[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
         value /= base;
-    } while (value);
-    
-    *ptr-- = '\0';
-
-    while (low < ptr) {
-        char tmp = *low;
-        *low++ = *ptr;
-        *ptr-- = tmp;
     }
 
-    return rc;
+    if (isNeg) {
+        str[i++] = '-';
+    }
 
+    str[i] = '\0';
+
+    strrev(str);
+
+    return str;
 }

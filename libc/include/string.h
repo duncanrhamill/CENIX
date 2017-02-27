@@ -15,6 +15,7 @@ extern "C" {
     void* memset(void*, int, size_t);
     size_t strlen(const char*);
     char* trim(char*);
+    void strrev(char*);
 
 #ifdef __cplusplus
 }
